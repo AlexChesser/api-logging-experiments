@@ -18,6 +18,7 @@ services:
       - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      # KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://:9092"
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -41,37 +42,37 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
-  schema-registry:
-    image: confluentinc/cp-schema-registry:5.0.0
-    hostname: schema-registry
-    container_name: schema-registry
-    platform: linux/amd64
-    environment:
-      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-    depends_on:
-      - zookeeper
-      - kafka
-    ports:
-      - '8081:8081'
+  # schema-registry:
+  #   image: confluentinc/cp-schema-registry:5.0.0
+  #   hostname: schema-registry
+  #   container_name: schema-registry
+  #   platform: linux/amd64
+  #   environment:
+  #     SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
+  #     SCHEMA_REGISTRY_HOST_NAME: schema-registry
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
+  #   ports:
+  #     - '8081:8081'
 
-  control-center:
-    image: confluentinc/cp-enterprise-control-center:5.0.0
-    platform: linux/amd64
-    depends_on:
-    - zookeeper
-    - kafka
-    hostname: control-center
-    container_name: control-center
-    ports:
-    - "9022:9021"
-    environment:
-      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081/"
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: "kafka:9092"
-      CONTROL_CENTER_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      CONTROL_CENTER_CONNECT_CLUSTER: 'connect:8083'
-      CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_KSQL_ENABLE: "false"
+  # control-center:
+  #   image: confluentinc/cp-enterprise-control-center:5.0.0
+  #   platform: linux/amd64
+  #   depends_on:
+  #   - zookeeper
+  #   - kafka
+  #   hostname: control-center
+  #   container_name: control-center
+  #   ports:
+  #   - "9022:9021"
+  #   environment:
+  #     CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081/"
+  #     CONTROL_CENTER_BOOTSTRAP_SERVERS: "kafka:9092"
+  #     CONTROL_CENTER_ZOOKEEPER_CONNECT: "zookeeper:2181"
+  #     CONTROL_CENTER_CONNECT_CLUSTER: 'connect:8083'
+  #     CONTROL_CENTER_REPLICATION_FACTOR: 1
+  #     CONTROL_CENTER_KSQL_ENABLE: "false"
 
   my-experimental-api:
     image: my-experimental-api
@@ -79,12 +80,12 @@ services:
       context: my-experimental-api
       dockerfile: ./api/dockerfile
     depends_on:
-    - zookeeper
     - kafka
     hostname: my-experimental-api
     container_name: my-experimental-api
     ports:
     - "8083:8000"
     environment:
-      KAFKA_BOOTSTRAP_SERVER: "kafka:9092"
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
       KAFKA_LOGGING_TOPIC: "my-experimental-api-logging"
+      KAFKA_CLIENT_ID: "my-experimental-api-client-id"

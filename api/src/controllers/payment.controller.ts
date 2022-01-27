@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Router,  Request, Response, NextFunction  } from "express"
 import { IAPIController } from "../interfaces/IAPIController";
-import { LoggerStart, LoggerEnd } from "../middleware/logging.middleware";
-
+import Console from "../middleware/console.logging.middleware";
+import KafkaLogging from "../middleware/kafka.logging.middleware";
 const router = Router()
 
 function stub(req: Request, res: Response, next: NextFunction): void {
@@ -11,7 +12,7 @@ function stub(req: Request, res: Response, next: NextFunction): void {
     return;
 }
 
-router.get("/payment", LoggerStart, stub, LoggerEnd);
-router.post("/payment", LoggerStart, stub, LoggerEnd);
+router.get("/payment", KafkaLogging.Start, Console.Start, stub, Console.End, KafkaLogging.End);
+router.post("/payment", KafkaLogging.Start, Console.Start, stub, Console.End, KafkaLogging.End);
 
 export default { router } as IAPIController;

@@ -1,5 +1,6 @@
+import { ILoggingMiddleware } from "../interfaces/ILoggingMiddleware";
 import { Request, Response, NextFunction } from "express"
-export function LoggerStart(
+ function Start(
     req: Request,
     _res: Response,
     next: NextFunction,
@@ -9,7 +10,7 @@ export function LoggerStart(
     return;
   }
 
-  export function LoggerEnd(
+  function End(
     req: Request,
     _res: Response,
     next: NextFunction,
@@ -18,3 +19,5 @@ export function LoggerStart(
     next();
     return;
   }
+  
+  export default { Start, End } as ILoggingMiddleware
