@@ -1,4 +1,5 @@
 import { Router,  Request, Response, NextFunction  } from "express"
+import { IAPIController } from "../interfaces/IAPIController";
 import { LoggerStart, LoggerEnd } from "../middleware/logging.middleware";
 
 const router = Router()
@@ -13,4 +14,4 @@ function stub(req: Request, res: Response, next: NextFunction): void {
 router.get("/payment", LoggerStart, stub, LoggerEnd);
 router.post("/payment", LoggerStart, stub, LoggerEnd);
 
-export default router;
+export default { router } as IAPIController;
