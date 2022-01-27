@@ -1,0 +1,37 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w && nodemon ./dist/index.js",
+    "dev": "yarn build --watch --preserveWatchOutput  && npx nodemon ./dist/index.js",
+    "serve":"npx nodemon ./dist/index.js",
+    "extract": "yarn api-extractor run --local",
+    "api-report": "api-extractor run",
+    "api-docs": "api-documenter markdown -i temp -o docs",
+    "build-with-docs": "yarn build && yarn api-report && yarn api-docs",
+    "lint": "eslint src --ext js,ts",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@microsoft/api-documenter": "^7.15.1",
+    "@microsoft/api-extractor": "^7.19.4",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "eslint": "^8.7.0",
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
