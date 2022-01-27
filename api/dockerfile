@@ -6,4 +6,5 @@ COPY yarn.lock .
 RUN yarn
 COPY . .
 EXPOSE 8000:8000
+RUN npm run build
 ENTRYPOINT [ "npx", "nodemon", "/api/dist/index.js" ]
