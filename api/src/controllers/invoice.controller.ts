@@ -1,4 +1,4 @@
-import { Router,  Response } from "express"
+import { Router,  Response, NextFunction } from "express"
 import { LoggerStart, LoggerEnd } from "../middleware/logging.middleware";
 
 const router = Router()
