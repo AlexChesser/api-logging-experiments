@@ -44,7 +44,22 @@ async function initialize(): Promise<void> {
   await admin.disconnect();
 }
 
+async function write(topic: string, messages: any[]){
+  // TODO: revert to strict types
+  const kafka: any = getInstance();
+  const producer: any = kafka.producer();
+  // TODO: generate and store a request guid on the request / session object 
+  // so that the END call to the logger can be reliably tied to the beginning call.
+  await producer.connect();
+  await producer.send({
+    topic,
+    messages
+  });
+  await producer.disconnect();
+}
+
 export default {
   initialize,
   getInstance,
+  write
 };
