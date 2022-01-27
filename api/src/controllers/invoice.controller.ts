@@ -3,7 +3,7 @@ import { LoggerStart, LoggerEnd } from "../middleware/logging.middleware";
 
 const router = Router()
 
-async function stub(req: Request, res: Response, next: NextFunction): Promise<void> {
+function stub(req: Request, res: Response, next: NextFunction): void {
     console.log("stub", req.url)
     res.status(200).json({ message: "ok" });
     next();

@@ -1,18 +1,20 @@
 import { Request, Response, NextFunction } from "express"
-export async function LoggerStart(
+export function LoggerStart(
     req: Request,
     _res: Response,
     next: NextFunction,
-  ): Promise<void> {
+  ): void {
     console.log(Date.now(), "started request", req.url, req.headers.authorization);
     next();
+    return;
   }
 
-  export async function LoggerEnd(
+  export function LoggerEnd(
     req: Request,
     _res: Response,
     next: NextFunction,
-  ): Promise<void> {
+  ): void {
     console.log(Date.now(), "ended request", req.url, req.headers.authorization);
     next();
+    return;
   }
