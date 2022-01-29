@@ -29,26 +29,31 @@ services:
     ports:
       - "9092:9092"
 
-  ksqldb:
+
   # https://docs.ksqldb.io/en/latest/operate-and-deploy/installation/install-ksqldb-with-docker/
-    hostname: ksqldb
+  # https://ksqldb.io/quickstart.html
+  ksqldb-server:
     image: confluentinc/ksqldb-server:0.23.1
-    platform: linux/amd64
-    container_name: ksqldb
-    # volumes:
-    #   - "./extensions/:/opt/ksqldb-udfs"
+    hostname: ksqldb-server
+    container_name: ksqldb-server
     depends_on:
-    - kafka
+      - kafka
+    ports:
+      - "8088:8088"
     environment:
+      KSQL_LISTENERS: http://0.0.0.0:8088
       KSQL_BOOTSTRAP_SERVERS: kafka:9092
-      KSQL_KSQL_SERVICE_ID: ksqldb
-      # KSQL_LISTENERS: "http://0.0.0.0:8088"
-      # KSQL_BOOTSTRAP_SERVERS: "broker:9092"
-      # KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      # KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
-      # KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-      # # Configuration for UDFs
-      # KSQL_KSQL_EXTENSION_DIR: "/opt/ksqldb-udfs"
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli:0.23.1
+    container_name: ksqldb-cli
+    depends_on:
+      - kafka
+      - ksqldb-server
+    entrypoint: /bin/sh
+    tty: true
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
