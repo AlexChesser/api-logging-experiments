@@ -29,12 +29,12 @@ the api has six endpoints currently all stubs intended to demonstrate the loggin
 
 to be clear - they do NOTHING but write events to kafka telling you that they were called.
 
-- GET `/v1/invoice/` 
-- GET `/v1/payment/` 
-- GET `/v1/log/` 
-- POST `/v1/invoice/` 
-- POST `/v1/payment/` 
-- POST `/v1/log/` 
+- GET `/api/v1/invoice/` 
+- GET `/api/v1/payment/` 
+- GET `/api/v1/log/` 
+- POST `/api/v1/invoice/` 
+- POST `/api/v1/payment/` 
+- POST `/api/v1/log/` 
 
 ## TODO: 
 
