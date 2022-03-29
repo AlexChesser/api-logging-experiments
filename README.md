@@ -8,7 +8,6 @@ The project currently is designed as a multi-container solution using the follow
 
     - zookeper: required by kafka in order to keep things running. It's like a federation layer
     - kafka: a widely used distributed and scalable event logging system interact directly with this server using `http://localhost:9082`
-    - schema-registry & control-center: honestly - I forget what the heck these are for and but I they were mentioned in a tutorial that I've lost the reference to. I'm not actually going to delete them until I know what they do... but they're probably useless in this context.
     - kafka-ui: this is so cool! It's a super easy way to see what's happening within your kafa instance when the cluster is running you can browse the ui on `http://localhost:8082` great for debugging.
     - my-exeprimental-api: this is the code found within the `./api/` folder.  When running this will get deployed on `http://localhost:8083` note that before running the docker-compose, you must BUILD the docker image using the command `docker build ./api --tag my-experimental-api`
 
@@ -38,10 +37,12 @@ to be clear - they do NOTHING but write events to kafka telling you that they we
 
 ## TODO: 
 
-- write middleware so endpoints can be configured to log to kafka
+- ~~write middleware so endpoints can be configured to log to kafka~~
+- implement a ksqldb connection
 - write a GET function for the log API so it can read the list of logs
 - expand the log-reader so that it is queryable along a number of dimensions. (TBD)
 
 
 
-
+- do we have to figure out how to link up a dev specific salesforce instance to a local mongo database?
+- for using a shared instance of kafka - how do individual developers use local database?
