@@ -35,6 +35,27 @@ to be clear - they do NOTHING but write events to kafka telling you that they we
 - POST `/api/v1/payment/` 
 - POST `/api/v1/log/` 
 
+# Kafka connector settings and notes
+
+Within the kafka connector ui create a new kafka connector using a mongosink connector with the following settings. 
+
+Note that to work properly your KEY and BODY in the kafka message have to be correctly formatted JSON data 
+
+```
+connector.class=com.mongodb.kafka.connect.MongoSinkConnector
+key.converter.schemas.enable=false
+database=apitest
+topics=test_topic_mongo
+tasks.max=1
+connection.uri=mongodb://mongodb:27017/
+value.converter.schemas.enable=false
+collection=kafkademo
+value.converter=org.apache.kafka.connect.json.JsonConverter
+key.converter=org.apache.kafka.connect.json.JsonConverter
+schemas.enable=false
+```
+
+
 ## TODO: 
 
 - ~~write middleware so endpoints can be configured to log to kafka~~
