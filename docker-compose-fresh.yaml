@@ -1,0 +1,67 @@
+version: "3"
+services:
+  zookeeper:
+    # documentation: https://hub.docker.com/r/bitnami/zookeeper
+    image: zookeeper:latest
+    hostname: zookeeper
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: "2181"
+      ALLOW_ANONYMOUS_LOGIN: true
+      ZOO_ADMIN_SERVER_PORT_NUMBER: "8085"
+    ports:
+      - '2181:2181'
+      - '8085:8085'
+    volumes:
+      - ~/Documents/persistence/zookeeper/logs:/bitnami/zookeeper
+
+  kafka:
+    # documentation: https://hub.docker.com/r/bitnami/zookeeper
+    hostname: kafka
+    image: bitnami/kafka:3.1.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://:9092,EXTERNAL://localhost:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    volumes:
+      - ~/Documents/persistence/kafka:/bitnami/kafka
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    hostname: kafka-ui
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - 8082:8080
+    environment:
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+
+  my-experimental-api:
+    image: my-experimental-api
+    build: 
+      context: my-experimental-api
+      dockerfile: ./api/dockerfile
+    depends_on:
+    - kafka
+    hostname: my-experimental-api
+    container_name: my-experimental-api
+    ports:
+    - "8084:8000"
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      KAFKA_LOGGING_TOPIC: "my-experimental-api-logging"
+      KAFKA_CLIENT_ID: "my-experimental-api-client-id"
+
+  
