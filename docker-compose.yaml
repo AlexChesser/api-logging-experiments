@@ -51,22 +51,6 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
-  my-experimental-api:
-    image: my-experimental-api
-    build: 
-      context: ./api
-      dockerfile: dockerfile
-    depends_on:
-    - kafka
-    hostname: my-experimental-api
-    container_name: my-experimental-api
-    ports:
-    - "8084:8000"
-    environment:
-      KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      KAFKA_LOGGING_TOPIC: "my-experimental-api-logging"
-      KAFKA_CLIENT_ID: "my-experimental-api-client-id"
-
   connect:
     image: quickstart-connect-1.7.0:1.0
     build:
